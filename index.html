@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pricing Table</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --pro-color: #f97316;
+            --bg: #f9fafb;
+            --text: #1f2937;
+            --card-bg: #ffffff;
+            --highlight: #c084fc;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 2rem;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .toggle-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .toggle {
+            background: #e5e7eb;
+            border-radius: 999px;
+            padding: 0.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .toggle input {
+            display: none;
+        }
+
+        .toggle label {
+            background: white;
+            padding: 0.3rem 1rem;
+            border-radius: 999px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .toggle input:checked+label.yearly {
+            background: var(--primary);
+            color: white;
+        }
+
+        .toggle input:not(:checked)+label.yearly {
+            background: transparent;
+            color: var(--text);
+        }
+
+        .toggle input:checked+label.yearly~label.monthly {
+            background: transparent;
+            color: var(--text);
+        }
+
+        .toggle input:not(:checked)+label.yearly~label.monthly {
+            background: var(--primary);
+            color: white;
+        }
+
+        .pricing-cards {
+            display: grid;
+            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .card.recommended {
+            border: 3px solid var(--pro-color);
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .price {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .features {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0;
+        }
+
+        .features li {
+            margin: 0.5rem 0;
+        }
+
+        .features i {
+            color: var(--primary);
+            margin-right: 0.5rem;
+        }
+
+        .card button {
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background 0.3s ease;
+        }
+
+        .card.recommended button {
+            background: var(--pro-color);
+        }
+
+        .card button:hover {
+            background: var(--highlight);
+        }
+
+        @media (max-width: 600px) {
+            .toggle label {
+                font-size: 0.9rem;
+                padding: 0.3rem 0.8rem;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+
+<body>
+
+    <h1>Choose Your Plan</h1>
+
+    <!-- Toggle Switch -->
+    <div class="toggle-container">
+        <div class="toggle">
+            <input type="checkbox" id="billingToggle" />
+            <label for="billingToggle" class="monthly">Monthly</label>
+            <label for="billingToggle" class="yearly">Yearly</label>
+        </div>
+    </div>
+
+    <!-- Pricing Cards -->
+    <div class="pricing-cards">
+        <div class="card">
+            <h3>Basic</h3>
+            <div class="price" data-monthly="$9/mo" data-yearly="$90/yr">$9/mo</div>
+            <ul class="features">
+                <li><i class="fa-solid fa-check"></i>1 Website</li>
+                <li><i class="fa-solid fa-check"></i>10 GB Storage</li>
+                <li><i class="fa-solid fa-check"></i>Email Support</li>
+            </ul>
+            <button onclick="selectPlan('Basic')">Select Plan</button>
+
+        </div>
+
+        <div class="card recommended">
+            <h3>Pro</h3>
+            <div class="price" data-monthly="$19/mo" data-yearly="$190/yr">$19/mo</div>
+            <ul class="features">
+                <li><i class="fa-solid fa-check"></i>10 Websites</li>
+                <li><i class="fa-solid fa-check"></i>100 GB Storage</li>
+                <li><i class="fa-solid fa-check"></i>Priority Support</li>
+            </ul>
+            <button onclick="selectPlan('Pro')">Select Plan</button>
+
+        </div>
+
+        <div class="card">
+            <h3>Premium</h3>
+            <div class="price" data-monthly="$29/mo" data-yearly="$290/yr">$29/mo</div>
+            <ul class="features">
+                <li><i class="fa-solid fa-check"></i>Unlimited Websites</li>
+                <li><i class="fa-solid fa-check"></i>1 TB Storage</li>
+                <li><i class="fa-solid fa-check"></i>24/7 Support</li>
+            </ul>
+            <button onclick="selectPlan('Premium')">Select Plan</button>
+
+        </div>
+        <script>
+            const toggle = document.getElementById("billingToggle");
+            const prices = document.querySelectorAll(".price");
+
+            toggle.addEventListener("change", () => {
+                prices.forEach(price => {
+                    price.textContent = toggle.checked ? price.dataset.yearly : price.dataset.monthly;
+                });
+            });
+
+            function selectPlan(plan) {
+                const card = [...document.querySelectorAll(".card")].find(c => c.querySelector("h3").textContent === plan);
+
+                const price = toggle.checked
+                    ? card.querySelector(".price").dataset.yearly
+                    : card.querySelector(".price").dataset.monthly;
+
+                const features = [...card.querySelectorAll(".features li")]
+                    .map(li => `• ${li.textContent}`)
+                    .join('<br>');
+
+                Swal.fire({
+                    title: `${plan} Plan`,
+                    html: `
+                <p><strong>Price:</strong> ${price}</p>
+                <p><strong>Features:</strong><br>${features}</p>
+            `,
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonText: 'Continue to Checkout',
+                    cancelButtonText: 'Cancel',
+                    confirmButtonColor: '#4f46e5'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Show loading spinner
+                        Swal.fire({
+                            title: 'Processing your order...',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+
+                        // Simulate delay (e.g., 2 seconds)
+                        setTimeout(() => {
+                            Swal.fire({
+                                title: 'Success!',
+                                text: `You've successfully subscribed to the ${plan} plan.`,
+                                icon: 'success',
+                                confirmButtonText: 'Awesome!',
+                                confirmButtonColor: '#4f46e5'
+                            });
+                        }, 2000);
+                    }
+                });
+            }
+        </script>
+
+
+</body>
+
+</html>
